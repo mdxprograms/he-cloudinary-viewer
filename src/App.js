@@ -8,12 +8,10 @@ const url = folder =>
   `https://res.cloudinary.com/highereducation/image/list/${folder}.json`;
 
 const Gallery = ({ images }) => (
-  <div className="gallery col-sm-12 card-deck">
+  <div className="gallery">
     {images.map((image, index) => (
-      <div key={index} className="col-sm-6 col-lg-4 card h-100">
-        <div className="card-block">
-          <Image publicId={image.public_id} width="300" />
-        </div>
+      <div key={index} className="gallery-item">
+        <Image publicId={image.public_id} width="300" />
         <code>
           https://res.cloudinary.com/highereducation/image/upload/v1/
           {image.public_id}
@@ -69,8 +67,8 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App container-fluid content-row">
-        <nav className="navbar navbar-default">
+      <div className="App">
+        <nav className="nav">
           <div className="nav-item">
             <input
               type="text"
@@ -80,11 +78,11 @@ class App extends Component {
             />
             <button
               onClick={this.handleSearchSubmit}
-              className="btn btn-primary"
+              className="button-submit"
             >
               Submit
             </button>
-            <button onClick={this.fetchImages} className="btn btn-danger">
+            <button onClick={this.fetchImages} className="button-reset">
               Reset
             </button>
             <select onChange={this.handleFolderSelect}>
@@ -96,11 +94,11 @@ class App extends Component {
           </div>
         </nav>
         {this.state.fetching && <div>Fetching...</div>}
-        <div className="row">
+        {!this.state.fetching && this.state.images.length > 0 && (
           <CloudinaryContext cloudName="highereducation">
             <Gallery images={this.state.images} />
           </CloudinaryContext>
-        </div>
+        )}
       </div>
     );
   }
