@@ -13,8 +13,7 @@ const Gallery = ({ images }) => (
       <div key={index} className="gallery-item">
         <Image publicId={image.public_id} width="300" />
         <code>
-          https://res.cloudinary.com/highereducation/image/upload/v1/
-          {image.public_id}
+          https://res.cloudinary.com/highereducation/image/upload/v1/{image.public_id}
         </code>
       </div>
     ))}
@@ -28,6 +27,12 @@ class App extends Component {
     images: [],
     query: ""
   };
+
+  constructor(props) {
+    super(props);
+
+    this.queryInput = React.createRef();
+  }
 
   fetchImages = () => {
     this.setState({ fetching: true, images: [] });
@@ -53,12 +58,17 @@ class App extends Component {
     }
   };
 
+  handleReset = () => {
+    this.queryInput.current.value = "";
+    this.fetchImages();
+  }
+
   handleSearchInput = ev => this.setState({ query: ev.currentTarget.value });
 
   handleSearchSubmit = () => {
     if (this.state.query.length > 0) {
       const images = this.state.images.filter(image =>
-        this.parseImgId(image.public_id).includes(this.state.query)
+        this.parseImgId(image.public_id).includes(this.state.query.toLowerCase())
       );
 
       this.setState({ images });
@@ -71,6 +81,7 @@ class App extends Component {
         <nav className="nav">
           <div className="nav-item">
             <input
+              ref={this.queryInput}
               type="text"
               className="field"
               onChange={this.handleSearchInput}
@@ -82,7 +93,7 @@ class App extends Component {
             >
               Submit
             </button>
-            <button onClick={this.fetchImages} className="button-reset">
+            <button onClick={this.handleReset} className="button-reset">
               Reset
             </button>
             <select onChange={this.handleFolderSelect}>
