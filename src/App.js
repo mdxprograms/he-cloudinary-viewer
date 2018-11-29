@@ -5,7 +5,7 @@ import { CloudinaryContext, Image } from "cloudinary-react";
 import mediaFolders from "./media-folders.json";
 
 const url = folder =>
-  `http://res.cloudinary.com/highereducation/image/list/${folder}.json`;
+  `https://res.cloudinary.com/highereducation/image/list/${folder}.json`;
 
 const Gallery = ({ images }) => (
   <div className="gallery col-sm-12 card-deck">
